@@ -1,9 +1,8 @@
 name: Actions Workflow
 
 on:
-  repository_dispatch
+  repository_dispatch:
     types: [build]
-
 jobs:
   run-github-actions:
     runs-on: ubuntu-latest
