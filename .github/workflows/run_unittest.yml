@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  generate-unittest_component-matrix:
+  generate-unittest-component-matrix:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -12,18 +12,17 @@ jobs:
         id: set-matrix
         run: |
           cd components
-          find */test -maxdepth 0 | xargs dirname  | jq -R -s -cr 'split("\n")| map(split("/")[:1] | join("") |select(length > 0))'
-          components=$(find */test -maxdepth 0 | xargs dirname  | jq -R -s -cr 'split("\n")| map(split("/")[:1] | join("") |select(length > 0))')
+          components=$(find */src/tests -maxdepth 0 | xargs dirname | jq -R -s -cr 'split("\n") | map(split("/")[:1] | join("") |select(length > 0))')
           echo "::set-output name=matrix::$components"
     outputs:
-      matrix: ${{steps.set-matrix.outputs.matrix}}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
 
   run-unittest:
-    needs: [generate-unittest_component-matrix]
+    needs: [generate-unittest-component-matrix]
     strategy:
       fail-fast: false
       matrix:
-        component: ${{fromJson(needs.generate-unittest-component-matrix.outputs.matrix) }}
+        component: ${{ fromJson(needs.generate-unittest-component-matrix.outputs.matrix) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
