@@ -9,13 +9,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: set-matrix
-        id: setmatrix
+        id: set-matrix
         run: |
           cd components
           components=$(find */test -maxdepth 0 | xargs dirname  | jq -R -s -cr 'split("\n")| map(split("/")[:1] | join("") |select(length > 0))')
           echo "::set-output name=matrix::$components"
     outputs:
-      matrix: ${{ steps.setmatrix.outputs.matrix}}
+      matrix: ${{ steps.set-matrix.outputs.matrix}}
 
   run-unittest:
     needs: [generate-unittest_component-matrix]
