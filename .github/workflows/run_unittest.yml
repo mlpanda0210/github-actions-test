@@ -13,6 +13,7 @@ jobs:
         run: |
           ls -a 
           cd components
+          find */test
           components=$(find */test -maxdepth 0 | xargs dirname  | jq -R -s -cr 'split("\n")| map(split("/")[:1] | join("") |select(length > 0))')
           echo "::set-output name=matrix::$components"
     outputs:
