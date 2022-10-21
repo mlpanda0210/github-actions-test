@@ -1,5 +1,7 @@
 name: run unittest
+
 runs:
+  using: composite
   steps:
     - name: Setup Python
       uses: actions/setup-python@v4
