@@ -19,11 +19,11 @@ jobs:
 
   run-unittest:
     needs: [generate-unittest_component-matrix]
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         component: ${{ fromJson(needs.generate-unittest-component-matrix.outputs.matrix) }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/run-unittest
