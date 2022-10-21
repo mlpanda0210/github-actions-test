@@ -1,12 +1,30 @@
 name: run-unittests
-
 on:
   push:
     branches:
       - main
 jobs:
-  run-unittest:
+  generate-unittest_component-matrix:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: set-matrix
+        id: setmatrix
+        run: |
+          cd components
+          components = $(find */test -maxdepth 0 | xargs dirname  | jq -R -s -cr 'split("\n")| map(split("/")[:1] | join("") |select(length > 0))')
+        outputs:
+          matrix: ${{ steps.setmatrix.outputs.matrix}}
+
+  run-unittest:
+    needs: [generate-unittest_component-matrix]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        component: ${{ fromJson(needs.generate-unittest-component-matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/run-unittest
+        with:
+          component: ${{ matrix.component }}

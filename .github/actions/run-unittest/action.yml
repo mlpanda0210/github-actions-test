@@ -1,6 +1,11 @@
 name: run unittest
 
+inputs:
+  component:
+    required: true
+
 runs:
+  using: composite
   steps:
     - name: Setup Python
       uses: actions/setup-python@v4
@@ -10,8 +15,8 @@ runs:
       shell: bash
       run: |
         pip3 install pytest
-    - name: run unittest
-      working-directory: ./test
+    - name: run unittest (${{ inputs.component }})
+      working-directory: ./components/${{ inputs.component }}
       shell: bash
       run: |
         pytest
