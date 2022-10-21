@@ -12,7 +12,7 @@ jobs:
         id: set-matrix
         run: |
           cd components
-          components=$(find */src/tests -maxdepth 0 | xargs dirname | jq -R -s -cr 'split("\n") | map(split("/")[:1] | join("") |select(length > 0))')
+          components=$(find */test -maxdepth 0 | xargs dirname | jq -R -s -cr 'split("\n") | map(split("/")[:1] | join("") |select(length > 0))')
           echo "::set-output name=matrix::$components"
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
