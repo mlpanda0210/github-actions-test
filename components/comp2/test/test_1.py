@@ -2,5 +2,5 @@ import pytest
 
 
 def test_sub():
-    expected = 2
+    expected = 1
     assert 3 - 2 == expected
