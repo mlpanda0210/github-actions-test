@@ -7,22 +7,20 @@ jobs:
   get_pr_matrix:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.matrix}}
+      matrix: ${{ steps.matrix.outputs.value }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - id: matrix
         run: |
-          pr_list=$('gh pr list --json number --limit 5 | jq '[.[].number]')
+          pr_list=$(gh pr list --json number --limit 5 | jq '[.[].number]')
           echo "::set-output name=value::$(echo $pr_list | jq -c .)"
-
   do_process:
     needs: get_pr_matrix
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
       matrix:
-        value: ${{ fromJson(needs.get_pr_matrix.outputs.matrix)}}
+        value: ${{ fromJson(needs.get_pr_matrix.outputs.matrix) }}
     steps:
       - name: Processing for each pull request
       - run: |
