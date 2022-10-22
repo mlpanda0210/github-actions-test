@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@v3
       - id: matrix
         run: |
+          gh pr list --json number --limit 5 | jq '[.[].number]'
           pr_list=$(gh pr list --json number --limit 5 | jq '[.[].number]')
           echo "::set-output name=value::$(echo $pr_list | jq -c .)"
   do_process:
