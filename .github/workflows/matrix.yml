@@ -14,8 +14,8 @@ jobs:
       - id: matrix
         run: |
           gh pr list --json number --limit 5 | jq '[.[].number]'
-          pr_list=$(gh pr list --json number --limit 5 | jq '[.[].number]')
-          echo "::set-output name=value::$(echo $pr_list | jq -c .)"
+          pr_list=$(gh repo list --json name | jq -c '[.[].name]' )
+          echo "::set-output name=value::$(echo $pr_list)"
   do_process:
     needs: get_pr_matrix
     runs-on: ubuntu-latest
