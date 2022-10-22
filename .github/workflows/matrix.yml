@@ -23,5 +23,5 @@ jobs:
         value: ${{ fromJson(needs.get_pr_matrix.outputs.matrix) }}
     steps:
       - name: Processing for each pull request
-      - run: |
+        run: |
           echo ${{ matrix.value }}
