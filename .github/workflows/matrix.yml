@@ -13,8 +13,7 @@ jobs:
         uses: actions/checkout@v3
       - id: matrix
         run: |
-          gh pr list --json number --limit 5 | jq '[.[].number]'
-          pr_list=$(gh repo list --json name | jq -c '[.[].name]' )
+          pr_list=$(gh issue list --json title | jq -c '[.[].title]' )
           echo "::set-output name=value::$(echo $pr_list)"
   do_process:
     needs: get_pr_matrix
